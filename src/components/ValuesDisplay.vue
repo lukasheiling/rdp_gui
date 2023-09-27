@@ -1,3 +1,27 @@
+<template>
+  <div class="row bg-primary mt-2 mb-1">
+    <div
+      class="col-1"
+      data-bs-toggle="tooltip"
+      data-bs-placement="top"
+      data-bs-title="Tooltip on top"
+    >
+      time (UTC)
+    </div>
+    <div class="col-1">type</div>
+    <div class="col">value</div>
+  </div>
+  <div class="row bg-secondary rounded mt-1" v-for="value in values" :key="value">
+    <div class="col-1">
+      {{ formatDateFromTimestamp(value.time) }}
+    </div>
+    <div class="col-1">
+      {{ getTypeName(value) }}
+    </div>
+    <div class="col">{{ value.value.toFixed(2) }} {{ getUnit(value) }}</div>
+  </div>
+</template>
+
 <script lang="ts">
 import { Value } from '@/scripts/value'
 
@@ -23,31 +47,11 @@ export default {
         }
       }
       return 'XXX'
+    },
+    formatDateFromTimestamp(timestamp) {
+      const date = new Date(timestamp * 1000); // Convert timestamp to milliseconds
+      return date.toISOString().slice(0, 19).replace("T", " ");
     }
   }
 }
 </script>
-
-<template>
-  <div class="row bg-primary mt-2 mb-1">
-    <div
-      class="col-1"
-      data-bs-toggle="tooltip"
-      data-bs-placement="top"
-      data-bs-title="Tooltip on top"
-    >
-      time
-    </div>
-    <div class="col-1">type</div>
-    <div class="col">value</div>
-  </div>
-  <div class="row bg-secondary rounded mt-1" v-for="value in values" :key="value">
-    <div class="col-1">
-      {{ value.time }}
-    </div>
-    <div class="col-1">
-      {{ getTypeName(value) }}
-    </div>
-    <div class="col">{{ value.value.toFixed(2) }} {{ getUnit(value) }}</div>
-  </div>
-</template>
